@@ -137,7 +137,7 @@ class BTagScaleFactor:
                     feval = eval('lambda x: ' + formula, {'log': numpy.log, 'sqrt': numpy.sqrt})
                     out = numba.vectorize([
                         numba.float32(numba.float32),
-                        numba.float64(numba.float64),
+                        #numba.float64(numba.float64),
                     ])(feval)
                 else:
                     val = eval(formula, {'log': numpy.log, 'sqrt': numpy.sqrt})
@@ -185,6 +185,7 @@ class BTagScaleFactor:
         try:
             functions = self._compiled[systematic]
         except KeyError:
+            print("compiling {} BTag scale factor TFormulas for {}".format(len(self._corrections[systematic][-1]), systematic))
             functions = [BTagScaleFactor._compile(f) for f in self._corrections[systematic][-1]]
             self._compiled[systematic] = functions
         try:
